@@ -1,0 +1,26 @@
+﻿@model IEnumerable<Usina>
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+    <table>
+        @foreach (var usina in Model)
+        {
+        <tr>
+            <td>@usina.UsinaId</td>
+            <td>@usina.UcDaUsina</td>
+            <td>@usina.IsAtivo</td>
+            <td>@usina.NomeFornecedor</td>
+        </tr>
+        }
+    </table>
+</body>
+</html>
