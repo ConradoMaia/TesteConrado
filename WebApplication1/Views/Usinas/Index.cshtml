@@ -3,23 +3,72 @@
 @{
     ViewData["Title"] = "Index";
 }
+<nav class="border-bottom">
+    <h6>Listagem de usinas de Geração Distribuída</h6>
+</nav>
 
-<h1>Index</h1>
+<nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white box-shadow mb-3">
+    <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+        <ul class="navbar-nav flex-grow-1">
+            <li class="nav-item">
+                <a class="nav-link text-dark">Fornecedor</a>
+            </li>
+            <li>
+                <div class="container-fluid">
+                    <form class="navbar-form navbar-left" asp-controller="Usina" asp-action="Search" method="get">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Selecione" name="searchString" value="@ViewData["searchString"]">
+                        </div>
+                    </form>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark">UC da usina</a>
+            </li>
+            <li>
+                <div class="container-fluid">
+                    <form class="navbar-form navbar-left" asp-controller="Usina" asp-action="Search" method="get">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Selecione" name="searchString" value="@ViewData["searchString"]">
+                        </div>
+                    </form>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark">Ativo</a>
+            </li>
+            <li>
+                <div class="container-fluid">
+                    <form class="navbar-form navbar-left" asp-controller="Usina" asp-action="Search" method="get">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Selecione" name="searchString" value="@ViewData["searchString"]">
+                        </div>
+                    </form>
+                </div>
+            </li>
+        </ul>
+    </div>   
+</nav>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+<div class="text-right" align="right">
+    <div class="btn-group">
+        <a class="btn btn-success" asp-action="Create">Cadastrar</a>
+        &nbsp;&nbsp;&nbsp;
+        <a class="btn btn-success" asp-action="Index">Filtrar dados</a>
+    </div>
+</div>
+
 <table class="table">
     <thead>
         <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.NomeFornecedor)
+            </th>
             <th>
                 @Html.DisplayNameFor(model => model.UcDaUsina)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.IsAtivo)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.NomeFornecedor)
             </th>
             <th></th>
         </tr>
@@ -28,13 +77,13 @@
 @foreach (var item in Model) {
         <tr>
             <td>
+                @Html.DisplayFor(modelItem => item.NomeFornecedor)
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.UcDaUsina)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.IsAtivo)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NomeFornecedor)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.UsinaId">Edit</a> |
