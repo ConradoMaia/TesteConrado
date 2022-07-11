@@ -21,7 +21,7 @@ namespace CadastroDeUsinas.Controllers
         }
 
         // GET: Usinas
-        public async Task<IActionResult> Index(string filter, int pageindex = 1, string sort = "NomeFornecedor")
+        public async Task<IActionResult> Index(string filter, int pageindex = 1, string sort = "UcDaUsina")
         {
             var resultado = _context.Usinas.AsNoTracking()
                                       .AsQueryable();
@@ -32,28 +32,10 @@ namespace CadastroDeUsinas.Controllers
                                             p.NomeFornecedor.Contains(filter));
             }
 
-            var model = await PagingList.CreateAsync(resultado, 20, pageindex, sort, "NomeFornecedor");
+            var model = await PagingList.CreateAsync(resultado, 20, pageindex, sort, "UcDaUsina");
             model.RouteValue = new RouteValueDictionary { { "filter", filter } };
 
             return View(model);
-        }
-
-        // GET: Usinas/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null || _context.Usinas == null)
-            {
-                return NotFound();
-            }
-
-            var usina = await _context.Usinas
-                .FirstOrDefaultAsync(m => m.UsinaId == id);
-            if (usina == null)
-            {
-                return NotFound();
-            }
-
-            return View(usina);
         }
 
         // GET: Usinas/Create
@@ -69,6 +51,11 @@ namespace CadastroDeUsinas.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("UsinaId,UcDaUsina,IsAtivo,NomeFornecedor")] Usina usina)
         {
+            if(_context.Usinas.Any(u => u.NomeFornecedor == usina.NomeFornecedor &&
+                                   u.UcDaUsina == usina.UcDaUsina))
+            {
+                ModelState.AddModelError("UcDaUsina", $"Essa usina já está registrada.");
+            }
             if (ModelState.IsValid)
             {
                 _context.Add(usina);
@@ -106,8 +93,15 @@ namespace CadastroDeUsinas.Controllers
                 return NotFound();
             }
 
+            if (_context.Usinas.Any(u => u.NomeFornecedor == usina.NomeFornecedor &&
+                                   u.UcDaUsina == usina.UcDaUsina))
+            {
+                ModelState.AddModelError("UcDaUsina", $"Essa usina já está registrada.");
+            }
+
             if (ModelState.IsValid)
             {
+               
                 try
                 {
                     _context.Update(usina);

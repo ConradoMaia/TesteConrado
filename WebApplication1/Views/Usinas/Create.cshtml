@@ -3,9 +3,9 @@
 @{
     ViewData["Title"] = "Create";
 }
-<nav class="border-bottom">
+<div class="border-bottom">
     <h6>Cadastro de Usinas</h6>
-</nav>
+</div>
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
@@ -22,13 +22,18 @@
             </div>
             <div class="form-group">
                 <label asp-for="NomeFornecedor" class="control-label"></label>
-                <select name="NomeFornecedor" class="form-control"> 
+                <select name="NomeFornecedor" class="nav-link text-dark"> 
+                     <option value="Selecione">Selecione</option>
                      <option value="SOLARIAN">SOLARIAN</option>
-                     <option value="CONRADO">CONRADO</option>
-                     <option value="TESTEFORNCECEDOR">TESTEFORNCECEDOR</option>
+                     <option value="FUTURA">FUTURA</option>
+                     <option value="CENTRAL GERADORA FAZENDA MODELO">CENTRAL GERADORA FAZENDA MODELO</option>
+                     <option value="NOVA MUNDO">NOVA MUNDO</option>
+                     <option value="SOLARE">SOLARE</option>
+                     <option value="UNISOL">UNISOL</option>
                 </select>
                 <span asp-validation-for="NomeFornecedor" class="text-danger"></span>
             </div>
+            <br />
             <div class="form-group">
                 <input class="btn btn-success" type="submit" value="Salvar"/>
                  &nbsp;

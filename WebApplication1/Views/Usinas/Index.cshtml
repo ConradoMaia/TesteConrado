@@ -7,14 +7,6 @@
     <h6>Listagem de usinas de Geração Distribuída</h6>
 </nav>
 
-<form method="get" class="form-inline">
-    
-    <input name="filter" class="form-control" placeholder="filtro"
-           value="@Model.RouteValue["Filter"]" />
-
-    <button type="submit" class="btn btn-info">Procurar</button>
-</form>
-
 <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white box-shadow mb-3">
     <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
         <ul class="navbar-nav flex-grow-1">
@@ -22,47 +14,42 @@
                 <a class="nav-link text-dark">Fornecedor</a>
             </li>
             <li>
-                <select name="NomeFornecedor" class="form-control"> 
+                <select name="NomeFornecedor" class="nav-link text-dark"> 
+                    <option value="Selecione">Selecione</option>
                      <option value="SOLARIAN">SOLARIAN</option>
-                     <option value="CONRADO">CONRADO</option>
-                     <option value="TESTEFORNCECEDOR">TESTEFORNCECEDOR</option>
+                     <option value="FUTURA">FUTURA</option>
+                     <option value="CENTRAL GERADORA FAZENDA MODELO">CENTRAL GERADORA FAZENDA MODELO</option>
+                     <option value="NOVA MUNDO">NOVA MUNDO</option>
+                     <option value="SOLARE">SOLARE</option>
+                     <option value="UNISOL">UNISOL</option>
+                </select>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark">Ativo</a>
+            </li>
+            <li>
+                <select name="IsAtivo" class="nav-link text-dark"> 
+                     <option value=null>Selecione</option>
+                     <option value=1>Sim</option>
+                     <option value=0>Não</option>
                 </select>
             </li>
             <li class="nav-item">
                 <a class="nav-link text-dark">UC da usina</a>
             </li>
             <li>
-                <div class="container-fluid">
-                    <form class="navbar-form navbar-left" asp-controller="Usina" asp-action="Search" method="get">
-                        <div class="form-group">
-                            <input type="text" class="form-control" placeholder="Selecione" name="searchString" value="@ViewData["searchString"]">
-                        </div>
-                    </form>
-                </div>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link text-dark">Ativo</a>
-            </li>
-            <li>
-                <div class="container-fluid">
-                    <form class="navbar-form navbar-left" asp-controller="Usina" asp-action="Search" method="get">
-                        <div class="form-group">
-                            <input type="text" class="form-control" placeholder="Selecione" name="searchString" value="@ViewData["searchString"]">
-                        </div>
-                    </form>
-                </div>
+                <form method="get" class="form-inline">
+                    <input name="filter" class="nav-link text-dark" placeholder="Selecione"
+                           value="@Model.RouteValue["Filter"]" />
+                    <br>
+                    <a class="btn btn-success" asp-action="Create">Cadastrar</a>
+                    <button type="submit" class="btn btn-success" align="right">Filtrar dados </button>
+                </form>
+
             </li>
         </ul>
     </div>   
 </nav>
-
-<div class="text-right" align="right">
-    <div class="btn-group">
-        <a class="btn btn-success" asp-action="Create">Cadastrar</a>
-        &nbsp;&nbsp;&nbsp;
-        <a class="btn btn-success" asp-action="Index">Filtrar dados</a>
-    </div>
-</div>
 
 <table class="table">
     <thead>
@@ -94,9 +81,8 @@
                 @Html.DisplayFor(modelItem => item.IsAtivo)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.UsinaId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.UsinaId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.UsinaId">Delete</a>
+                <a asp-action="Edit" asp-route-id="@item.UsinaId">Editar</a> |
+                <a asp-action="Delete" asp-route-id="@item.UsinaId">Apagar</a>
             </td>
         </tr>
 }
