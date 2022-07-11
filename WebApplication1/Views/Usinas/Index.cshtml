@@ -1,4 +1,4 @@
-﻿@model IEnumerable<CadastroDeUsinas.Models.Usina>
+﻿@model ReflectionIT.Mvc.Paging.PagingList<CadastroDeUsinas.Models.Usina>
 
 @{
     ViewData["Title"] = "Index";
@@ -7,6 +7,14 @@
     <h6>Listagem de usinas de Geração Distribuída</h6>
 </nav>
 
+<form method="get" class="form-inline">
+    
+    <input name="filter" class="form-control" placeholder="filtro"
+           value="@Model.RouteValue["Filter"]" />
+
+    <button type="submit" class="btn btn-info">Procurar</button>
+</form>
+
 <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white box-shadow mb-3">
     <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
         <ul class="navbar-nav flex-grow-1">
@@ -14,13 +22,11 @@
                 <a class="nav-link text-dark">Fornecedor</a>
             </li>
             <li>
-                <div class="container-fluid">
-                    <form class="navbar-form navbar-left" asp-controller="Usina" asp-action="Search" method="get">
-                        <div class="form-group">
-                            <input type="text" class="form-control" placeholder="Selecione" name="searchString" value="@ViewData["searchString"]">
-                        </div>
-                    </form>
-                </div>
+                <select name="NomeFornecedor" class="form-control"> 
+                     <option value="SOLARIAN">SOLARIAN</option>
+                     <option value="CONRADO">CONRADO</option>
+                     <option value="TESTEFORNCECEDOR">TESTEFORNCECEDOR</option>
+                </select>
             </li>
             <li class="nav-item">
                 <a class="nav-link text-dark">UC da usina</a>
@@ -96,3 +102,8 @@
 }
     </tbody>
 </table>
+
+Usinas encontradas: @Model.TotalRecordCount
+<div>
+   <vc:pager paging-list="@Model"></vc:pager>
+</div>

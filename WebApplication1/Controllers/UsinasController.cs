@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CadastroDeUsinas.Context;
 using CadastroDeUsinas.Models;
+using ReflectionIT.Mvc.Paging;
 
 namespace CadastroDeUsinas.Controllers
 {
@@ -20,9 +21,21 @@ namespace CadastroDeUsinas.Controllers
         }
 
         // GET: Usinas
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string filter, int pageindex = 1, string sort = "NomeFornecedor")
         {
-              return View(await _context.Usinas.ToListAsync());
+            var resultado = _context.Usinas.AsNoTracking()
+                                      .AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(filter))
+            {
+                resultado = resultado.Where(p => p.UcDaUsina.ToString().Contains(filter) ||
+                                            p.NomeFornecedor.Contains(filter));
+            }
+
+            var model = await PagingList.CreateAsync(resultado, 20, pageindex, sort, "NomeFornecedor");
+            model.RouteValue = new RouteValueDictionary { { "filter", filter } };
+
+            return View(model);
         }
 
         // GET: Usinas/Details/5
