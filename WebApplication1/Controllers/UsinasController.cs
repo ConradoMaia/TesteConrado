@@ -21,19 +21,27 @@ namespace CadastroDeUsinas.Controllers
         }
 
         // GET: Usinas
-        public async Task<IActionResult> Index(string filter, int pageindex = 1, string sort = "UcDaUsina")
+        public async Task<IActionResult> Index(string filter, string filter2 = "Selecione", string filter3 = "Selecione", 
+                                                      int maxItensPage = 5, int pageindex = 1, string sort = "UcDaUsina")
         {
             var resultado = _context.Usinas.AsNoTracking()
                                       .AsQueryable();
 
             if (!string.IsNullOrWhiteSpace(filter))
             {
-                resultado = resultado.Where(p => p.UcDaUsina.ToString().Contains(filter) ||
-                                            p.NomeFornecedor.Contains(filter));
+                resultado = resultado.Where(p => p.UcDaUsina.ToString().Contains(filter));
+            }
+            if (filter2 != "Selecione")
+            {
+                resultado = resultado.Where(p => p.NomeFornecedor.Contains(filter2));
+            }
+            if (filter3 != "Selecione")
+            {
+                resultado = resultado.Where(p => p.IsAtivo.ToString().Contains(filter3));
             }
 
-            var model = await PagingList.CreateAsync(resultado, 20, pageindex, sort, "UcDaUsina");
-            model.RouteValue = new RouteValueDictionary { { "filter", filter } };
+            var model = await PagingList.CreateAsync(resultado, maxItensPage, pageindex, sort, "UcDaUsina");
+            model.RouteValue = new RouteValueDictionary { { "filter", filter }, { "filter2", filter2 }, { "filter3", filter3 } };
 
             return View(model);
         }
@@ -51,10 +59,14 @@ namespace CadastroDeUsinas.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("UsinaId,UcDaUsina,IsAtivo,NomeFornecedor")] Usina usina)
         {
-            if(_context.Usinas.Any(u => u.NomeFornecedor == usina.NomeFornecedor &&
+            if (_context.Usinas.Any(u => u.NomeFornecedor == usina.NomeFornecedor &&
                                    u.UcDaUsina == usina.UcDaUsina))
             {
                 ModelState.AddModelError("UcDaUsina", $"Essa usina já está registrada.");
+            }
+            if (usina.NomeFornecedor == "Selecione")
+            {
+                ModelState.AddModelError("NomeFornecedor", $"Adicione um fornecedor.");
             }
             if (ModelState.IsValid)
             {
@@ -62,6 +74,7 @@ namespace CadastroDeUsinas.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
             return View(usina);
         }
 
